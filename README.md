@@ -9,3 +9,5 @@ Archived shopping lists are available in read-only mode.
 
 ![screen3](https://github.com/ZaYeR-PL/ShoppingList/blob/master/screens/3.png?raw=true)
 ![screen4](https://github.com/ZaYeR-PL/ShoppingList/blob/master/screens/4.png?raw=true)
+
+*.apk file is available in "apk" directory.
