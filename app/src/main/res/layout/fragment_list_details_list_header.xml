@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/title_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:textSize="24dp"
+            android:hint="@string/fragment_list_details_list_header_title_hint"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <!--<EditText-->
+        <!--android:id="@+id/title_et"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/transparent"-->
+        <!--android:hint="@string/fragment_list_details_list_header_title_hint"/>-->
+
+    <LinearLayout
+        android:id="@+id/add_item_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/fragment_list_details_list_item_height">
+
+        <EditText
+            android:id="@+id/add_item_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginLeft="@dimen/fragment_list_details_list_item_icon_size"
+            android:drawableTint="@color/secondaryText"
+            android:hint="@string/fragment_list_details_list_header_add_item_hint"/>
+
+        <ImageView
+            android:id="@+id/add_item_iv"
+            android:layout_width="@dimen/fragment_list_details_list_item_icon_size"
+            android:layout_height="@dimen/fragment_list_details_list_item_icon_size"
+            android:layout_margin="@dimen/fragment_list_details_list_item_icon_margin"
+            android:layout_gravity="center_vertical"
+            android:tint="@color/colorAccent"
+            android:src="@drawable/fragment_list_details_list_header_add"/>
+
+    </LinearLayout>
+
+
+
+    <TextView
+        android:id="@+id/archived_message_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:textColor="@color/divider"
+        android:textAlignment="center"
+        android:drawableTop="@drawable/fragment_list_details_list_header_archived_message"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:text="@string/fragment_list_details_list_header_archived_message"/>
+
+</LinearLayout>

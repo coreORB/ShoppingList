@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/fragment_list_details_list_item_height">
+
+    <CheckBox
+        android:id="@+id/checked_cb"
+        android:layout_width="@dimen/fragment_list_details_list_item_icon_size"
+        android:layout_height="@dimen/fragment_list_details_list_item_icon_size"
+        android:layout_margin="@dimen/fragment_list_details_list_item_icon_margin"/>
+
+    <EditText
+        android:id="@+id/content_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/transparent"
+        android:layout_gravity="center_vertical"
+        tools:text="@string/lorem_ipsum"/>
+
+    <ImageView
+        android:id="@+id/remove_iv"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_margin="8dp"
+        android:tint="@color/secondaryText"
+        android:src="@drawable/fragment_list_details_list_item_remove"/>
+
+</LinearLayout>

@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Shopping List</string>
+
+    <string name="snackbar_action_retry">Retry</string>
+
+    <string name="activity_main_title">Shopping Lists</string>
+    <string name="activity_main_title_archived">Archived Shopping Lists</string>
+    <string name="activity_main_action_active">Show active</string>
+    <string name="activity_main_action_archived">Show archived</string>
+
+    <string name="fragment_main_no_shopping_lists">No shopping lists</string>
+    <string name="fragment_main_error_message_reading_shopping_lists">Error occurred while reading shopping lists</string>
+    <string name="fragment_main_list_item_no_title">No title</string>
+    <string name="fragment_main_list_item_empty_list">List is empty or no unchecked items</string>
+
+    <string name="title_activity_list_details">Shopping List Details</string>
+    <string name="activity_list_details_action_archive">Archive</string>
+    <string name="activity_list_details_action_delete">Delete</string>
+    <string name="fragment_list_details_list_header_title_hint">Title</string>
+    <string name="fragment_list_details_list_header_archived_message">Shopping list is archived.\nEditing is disabled!</string>
+    <string name="fragment_list_details_list_header_add_item_hint">Add item</string>
+    <string name="fragment_list_details_list_header_item_no_content_message">Item must have content!</string>
+
+    <string name="fragment_list_details_error_create_shopping_list">Error occurred while creating shopping list</string>
+    <string name="fragment_list_details_error_update_shopping_list">Error occurred while updating shopping list</string>
+    <string name="fragment_list_details_error_delete_shopping_list">Error occurred while deleting shopping list</string>
+    <string name="fragment_list_details_error_reading_items">Error occurred while reading items</string>
+    <string name="fragment_list_details_error_create_item">Error occurred while creating item</string>
+    <string name="fragment_list_details_error_update_item">Error occurred while updating item</string>
+    <string name="fragment_list_details_error_delete_item">Error occurred while deleting item</string>
+
+
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
+    <string name="lorem_ipsum_long">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed leo nec ipsum rhoncus congue quis in augue. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla rutrum dui mauris, ac tincidunt enim feugiat vitae. Pellentesque commodo felis id dapibus malesuada. Nunc mauris dui, efficitur eu condimentum vel, semper eget tellus. Nam vestibulum placerat sapien, eu efficitur lectus eleifend id. Duis ac ipsum pretium, bibendum lacus non, finibus quam. Suspendisse at porta dolor. Vestibulum tincidunt vel nisi vel lacinia. Cras a porttitor mi. Donec pretium, leo a consequat aliquam, neque tortor tempor tortor, non ultrices turpis sem sed mauris. Aliquam mollis bibendum quam. Nunc vitae tortor lectus.</string>
+</resources>
