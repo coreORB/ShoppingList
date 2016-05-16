@@ -1,10 +1,7 @@
 package pl.zayer.shoppinglist.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,7 +9,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import pl.zayer.shoppinglist.BuildConfig;
 import pl.zayer.shoppinglist.R;
+import pl.zayer.shoppinglist.TestData;
+import pl.zayer.shoppinglist.contentprovideraccess.CreateCallback;
+import pl.zayer.shoppinglist.pojos.ShoppingList;
 
 /**
  * Activity class showing active or archived shopping lists. New button is shown only when viewing
@@ -71,8 +72,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         if (showArchived) {
+            //standard menu shown on archived shopping lists
             getMenuInflater().inflate(R.menu.menu_main_archived, menu);
+        } else if (BuildConfig.DEBUG) {
+            //special debug menu shown on active shopping lists
+            getMenuInflater().inflate(R.menu.menu_main_debug, menu);
         } else {
+            //standard menu shown on active shopping lists
             getMenuInflater().inflate(R.menu.menu_main, menu);
         }
         return true;
@@ -94,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
             switchShoppingListsType(false);
             mainFragment.setShownShoppingListsToArchived(false);
             return true;
+        } else if (id == R.id.action_insert_test_data) {
+            createTestData();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -111,5 +120,24 @@ public class MainActivity extends AppCompatActivity {
         Log.i(LOG_TAG, "onSaveInstanceState() archived: " + showArchived);
         outState.putBoolean(STATE_SHOW_ARCHIVED, showArchived);
         super.onSaveInstanceState(outState);
+    }
+
+    /**
+     * Method for debuging purposes inserts new test data into database.
+     */
+    private void createTestData() {
+        CreateCallback<ShoppingList> callback = new CreateCallback<ShoppingList>() {
+            @Override
+            public void onSuccess(ShoppingList object) {
+                //refresh data
+                mainFragment.setShownShoppingListsToArchived(false);
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                //not used here
+            }
+        };
+        (new TestData()).createTestData(getContentResolver(), callback);
     }
 }

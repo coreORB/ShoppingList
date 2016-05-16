@@ -26,7 +26,7 @@
         </activity>
         <activity
             android:name=".activities.ListDetailsActivity"
-            android:label="@string/title_activity_list_details"
+            android:label="@string/activity_list_details_title"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

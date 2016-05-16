@@ -34,6 +34,15 @@ public class ShoppingList implements Parcelable {
         fullyLoaded = false;
     }
 
+    public ShoppingList(long id, String title, boolean archived, Calendar createdAt, ArrayList<Item> items, boolean fullyLoaded) {
+        this.id = id;
+        this.title = title;
+        this.archived = archived;
+        this.createdAt = createdAt;
+        this.items = items;
+        this.fullyLoaded = fullyLoaded;
+    }
+
     public ShoppingList(Parcel in) {
         id = in.readLong();
         title = in.readString();

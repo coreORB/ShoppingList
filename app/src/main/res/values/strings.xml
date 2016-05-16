@@ -7,13 +7,14 @@
     <string name="activity_main_title_archived">Archived Shopping Lists</string>
     <string name="activity_main_action_active">Show active</string>
     <string name="activity_main_action_archived">Show archived</string>
+    <string name="activity_main_action_insert_test_data">Insert test data</string>
 
     <string name="fragment_main_no_shopping_lists">No shopping lists</string>
     <string name="fragment_main_error_message_reading_shopping_lists">Error occurred while reading shopping lists</string>
     <string name="fragment_main_list_item_no_title">No title</string>
     <string name="fragment_main_list_item_empty_list">List is empty or no unchecked items</string>
 
-    <string name="title_activity_list_details">Shopping List Details</string>
+    <string name="activity_list_details_title"></string>
     <string name="activity_list_details_action_archive">Archive</string>
     <string name="activity_list_details_action_delete">Delete</string>
     <string name="fragment_list_details_list_header_title_hint">Title</string>
