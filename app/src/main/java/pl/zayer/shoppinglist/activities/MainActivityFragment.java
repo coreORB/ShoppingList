@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import pl.zayer.shoppinglist.R;
 import pl.zayer.shoppinglist.contentprovideraccess.ContentProviderAccess;
-import pl.zayer.shoppinglist.pojos.ShoppingList;
 import pl.zayer.shoppinglist.contentprovideraccess.SelectCallback;
+import pl.zayer.shoppinglist.pojos.ShoppingList;
 
 /**
  * Fragment class showing active or archived shopping lists.
@@ -140,6 +140,9 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
                 case ListDetailsActivity.OPERATION_ADD:
                     currentShoppingLists.add(0, shoppingList);
                     adapter.notifyDataSetChanged();
+                    if (adapter.getItemCount() == 1) {
+                        showViewList();
+                    }
                     break;
                 case ListDetailsActivity.OPERATION_UPDATE:
                     currentShoppingLists.set(currentShoppingLists.indexOf(shoppingList), shoppingList);
@@ -147,15 +150,23 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
                     break;
                 case ListDetailsActivity.OPERATION_REMOVE:
                     currentShoppingLists.remove(shoppingList);
+                    adapter.notifyDataSetChanged();
                     if (currentShoppingLists.size() == 0) {
                         showViewNoListsMessage();
-                    } else {
-                        adapter.notifyDataSetChanged();
                     }
                     break;
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * Hides loading view and "No lists" message, and shows list.
+     */
+    private void showViewList() {
+        listRV.setVisibility(View.VISIBLE);
+        loadingMPB.setVisibility(View.GONE);
+        noListsLL.setVisibility(View.GONE);
     }
 
     /**
