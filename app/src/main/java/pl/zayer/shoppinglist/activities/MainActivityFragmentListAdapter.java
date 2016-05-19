@@ -47,7 +47,7 @@ public class MainActivityFragmentListAdapter extends RecyclerView.Adapter<MainAc
         holder.mainCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onShoppingListClicked(item);
+                mListener.onShoppingListClicked(item, v);
             }
         });
         if (item.getTitle().equals("")) {
@@ -104,7 +104,7 @@ public class MainActivityFragmentListAdapter extends RecyclerView.Adapter<MainAc
     }
 
     public interface OnShoppingListClickedListener {
-        void onShoppingListClicked(ShoppingList shoppingList);
+        void onShoppingListClicked(ShoppingList shoppingList, View view);
     }
 
 }

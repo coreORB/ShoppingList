@@ -13,9 +13,10 @@ import android.view.View;
 
 import pl.zayer.shoppinglist.R;
 import pl.zayer.shoppinglist.contentprovideraccess.ContentProviderAccess;
-import pl.zayer.shoppinglist.pojos.ShoppingList;
 import pl.zayer.shoppinglist.contentprovideraccess.DeleteCallback;
 import pl.zayer.shoppinglist.contentprovideraccess.UpdateCallback;
+import pl.zayer.shoppinglist.pojos.ShoppingList;
+import pl.zayer.shoppinglist.utils.AnimationFinishedCallback;
 
 /**
  * Activity class showing shopping list details and enabling editing if shopping list is not
@@ -80,14 +81,9 @@ public class ListDetailsActivity extends AppCompatActivity {
                 .commit();
     }
 
-    /**
-     * Menu options are only available if shopping list is NOT archived.
-     * @param menu
-     * @return
-     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Menu is displays only if list is not archived
         if (!listArchived) {
             getMenuInflater().inflate(R.menu.menu_list_details, menu);
         }
@@ -121,11 +117,17 @@ public class ListDetailsActivity extends AppCompatActivity {
      * activity.
      */
     private void archiveShoppingList() {
+        Log.v(LOG_TAG, "archiveShoppingList()");
         if (listDetailsFragment == null) {
             Log.e(LOG_TAG, "List Details Fragment is null!");
             return;
         }
-        listDetailsFragment.showViewLoading();
+        listDetailsFragment.hideViewList(true, new AnimationFinishedCallback() {
+            @Override
+            public void animationFinished() {
+                listDetailsFragment.showViewLoading(true, null);
+            }
+        });
 
         ContentProviderAccess cpa = new ContentProviderAccess(getContentResolver());
         ShoppingList currentShoppingList = listDetailsFragment.getCurrentShoppingList();
@@ -159,11 +161,17 @@ public class ListDetailsActivity extends AppCompatActivity {
      * Deletes shopping list in database, returns result extras and exits activity.
      */
     private void deleteShoppingList() {
+        Log.v(LOG_TAG, "deleteShoppingList()");
         if (listDetailsFragment == null) {
             Log.e(LOG_TAG, "List Details Fragment is null!");
             return;
         }
-        listDetailsFragment.showViewLoading();
+        listDetailsFragment.hideViewList(true, new AnimationFinishedCallback() {
+            @Override
+            public void animationFinished() {
+                listDetailsFragment.showViewLoading(true, null);
+            }
+        });
 
         ContentProviderAccess cpa = new ContentProviderAccess(getContentResolver());
         ShoppingList currentShoppingList = listDetailsFragment.getCurrentShoppingList();
@@ -199,31 +207,45 @@ public class ListDetailsActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        Log.i(LOG_TAG, "onBackPressed()");
+        Log.v(LOG_TAG, "onBackPressed()");
 
-        if (listDetailsFragment != null) {
-            listDetailsFragment.showViewLoading();
-            coordinatorCL.requestFocus();
-            if (!listDetailsFragment.isQueryRunning()) {
-                returnResult();
-            } else {
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (listDetailsFragment.isQueryRunning()) {
-                            try {
-                                Thread.sleep(200);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        returnResult();
-                    }
-                });
-                thread.start();
-            }
+        if (listDetailsFragment == null) {
+            Log.e(LOG_TAG, "List Details Fragment is null!");
+            super.onBackPressed();
+            return;
         }
-        //super.onBackPressed();
+
+        //if list is archived all editing options are disabled, so there will be no result to return
+        if (listArchived) {
+            super.onBackPressed();
+            return;
+        }
+
+        listDetailsFragment.hideViewList(true, new AnimationFinishedCallback() {
+            @Override
+            public void animationFinished() {
+                listDetailsFragment.showViewLoading(true, null);
+            }
+        });
+        coordinatorCL.requestFocus();
+        if (!listDetailsFragment.isQueryRunning()) {
+            returnResult();
+        } else {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (listDetailsFragment.isQueryRunning()) {
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    returnResult();
+                }
+            });
+            thread.start();
+        }
     }
 
     /**
@@ -231,7 +253,7 @@ public class ListDetailsActivity extends AppCompatActivity {
      * activity.
      */
     private void returnResult() {
-        Log.i(LOG_TAG, "returnResult()");
+        Log.v(LOG_TAG, "returnResult()");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -250,6 +272,7 @@ public class ListDetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        Log.v(LOG_TAG, "onRestoreInstanceState()");
         super.onRestoreInstanceState(savedInstanceState);
         newMode = savedInstanceState.getBoolean(STATE_NEW_MODE);
         listArchived = savedInstanceState.getBoolean(STATE_LIST_ARCHIVED);
@@ -258,6 +281,7 @@ public class ListDetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        Log.v(LOG_TAG, "onSaveInstanceState()");
         outState.putBoolean(STATE_NEW_MODE, newMode);
         outState.putBoolean(STATE_LIST_ARCHIVED, listArchived);
         super.onSaveInstanceState(outState);

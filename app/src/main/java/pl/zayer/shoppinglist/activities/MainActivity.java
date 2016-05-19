@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import pl.zayer.shoppinglist.BuildConfig;
 import pl.zayer.shoppinglist.R;
@@ -28,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     private MainActivityFragment mainFragment;
     private FloatingActionButton fab;
 
+    private Animation scaleTo0Overshot;
+    private Animation scaleTo100Overshot;
+
     private boolean showArchived;
 
     @Override
@@ -40,13 +45,56 @@ public class MainActivity extends AppCompatActivity {
 
         mainFragment = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
 
+        prepareAnimations();
+
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mainFragment != null) {
-                    mainFragment.startNewListActivity();
+                    mainFragment.startNewListActivity(fab);
                 }
+            }
+        });
+    }
+
+    /**
+     * Prepares animations for floating action button to be used.
+     */
+    private void prepareAnimations() {
+        scaleTo0Overshot = AnimationUtils.loadAnimation(this, R.anim.scale_100_to_0_anticipate);
+        scaleTo0Overshot.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                //do nothing
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                fab.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //do nothing
+            }
+        });
+
+        scaleTo100Overshot = AnimationUtils.loadAnimation(this, R.anim.scale_0_to_100_overshot);
+        scaleTo100Overshot.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                fab.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                //do nothing
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //do nothing
             }
         });
     }
@@ -55,14 +103,22 @@ public class MainActivity extends AppCompatActivity {
      * Changes activity title and floating action button visibility depending on parameter.
      * @param archived wherever activity shows arhived shopping list or not
      */
-    private void switchShoppingListsType(boolean archived) {
+    private void switchShoppingListsType(boolean archived, boolean animate) {
         Log.i(LOG_TAG, "switchShoppingListsType()");
         showArchived = archived;
         if (archived) {
-            fab.setVisibility(View.GONE);
+            if (animate) {
+                fab.startAnimation(scaleTo0Overshot);
+            } else {
+                fab.setVisibility(View.GONE);
+            }
             setTitle(R.string.activity_main_title_archived);
         } else {
-            fab.setVisibility(View.VISIBLE);
+            if (animate) {
+                fab.startAnimation(scaleTo100Overshot);
+            } else {
+                fab.setVisibility(View.VISIBLE);
+            }
             setTitle(R.string.activity_main_title);
         }
         invalidateOptionsMenu();
@@ -93,11 +149,11 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_archived) {
-            switchShoppingListsType(true);
+            switchShoppingListsType(true, true);
             mainFragment.setShownShoppingListsToArchived(true);
             return true;
         } else if (id == R.id.action_active) {
-            switchShoppingListsType(false);
+            switchShoppingListsType(false, true);
             mainFragment.setShownShoppingListsToArchived(false);
             return true;
         } else if (id == R.id.action_insert_test_data) {
@@ -111,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        switchShoppingListsType(savedInstanceState.getBoolean(STATE_SHOW_ARCHIVED));
+        switchShoppingListsType(savedInstanceState.getBoolean(STATE_SHOW_ARCHIVED), false);
         Log.i(LOG_TAG, "onRestoreInstanceState() archived: " + showArchived);
     }
 
@@ -123,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Method for debuging purposes inserts new test data into database.
+     * Method for debugging purposes inserts new test data into database.
      */
     private void createTestData() {
         CreateCallback<ShoppingList> callback = new CreateCallback<ShoppingList>() {
