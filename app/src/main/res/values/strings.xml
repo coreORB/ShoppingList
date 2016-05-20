@@ -7,7 +7,8 @@
     <string name="activity_main_title_archived">Archived Shopping Lists</string>
     <string name="activity_main_action_active">Show active</string>
     <string name="activity_main_action_archived">Show archived</string>
-    <string name="activity_main_action_insert_test_data">Insert test data</string>
+    <string name="activity_main_action_insert_test_data_en">Insert test data EN</string>
+    <string name="activity_main_action_insert_test_data_pl">Insert test data PL</string>
 
     <string name="fragment_main_no_shopping_lists">No shopping lists</string>
     <string name="fragment_main_error_message_reading_shopping_lists">Error occurred while reading shopping lists</string>

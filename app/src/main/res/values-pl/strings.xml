@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Knot: Lista zakupów</string>
+
+    <string name="snackbar_action_retry">Ponów</string>
+
+    <string name="activity_main_title">Listy zakupów</string>
+    <string name="activity_main_title_archived">Zarchiwizowane listy zakupów</string>
+    <string name="activity_main_action_active">Pokaż aktywne</string>
+    <string name="activity_main_action_archived">Pokaż azrchiwizowane</string>
+    <string name="activity_main_action_insert_test_data_en">Umieść dane testowe EN</string>
+    <string name="activity_main_action_insert_test_data_pl">Umieść dane testowe PL</string>
+
+    <string name="fragment_main_no_shopping_lists">Brak list zakupów</string>
+    <string name="fragment_main_error_message_reading_shopping_lists">Wystąpił błąd podczas wczytywania list zakupów</string>
+    <string name="fragment_main_list_item_no_title">Brak tytułu</string>
+    <string name="fragment_main_list_item_empty_list">Brak niezaznaczonych pozycji</string>
+
+    <string name="activity_list_details_title"></string>
+    <string name="activity_list_details_action_archive">Zarchiwizuj</string>
+    <string name="activity_list_details_action_delete">Usuń</string>
+    <string name="fragment_list_details_list_header_title_hint">Tytuł</string>
+    <string name="fragment_list_details_list_header_archived_message">Lista zakupów została zarchiwizowana.\nEdycja jest wyłączona!</string>
+    <string name="fragment_list_details_list_header_add_item_hint">Dodaj pozycję</string>
+    <string name="fragment_list_details_list_header_item_no_content_message">Pozycja musi mieć zawartość!</string>
+
+    <string name="fragment_list_details_error_create_shopping_list">Wystąpił błąd podczas tworzenia listy zakupów</string>
+    <string name="fragment_list_details_error_update_shopping_list">Wystąpił błąd podczas aktualizowania listy zakupów</string>
+    <string name="fragment_list_details_error_delete_shopping_list">Wystąpił błąd podczas usuwania listy zakupów</string>
+    <string name="fragment_list_details_error_reading_items">Wystąpił błąd podczas wczytywania pozycji</string>
+    <string name="fragment_list_details_error_create_item">Wystąpił błąd podczas tworzenia pozycji</string>
+    <string name="fragment_list_details_error_update_item">Wystąpił błąd podczas aktualizacji pozycji</string>
+    <string name="fragment_list_details_error_delete_item">Wystąpił błąd podczas usuwania pozycji</string>
+
+</resources>

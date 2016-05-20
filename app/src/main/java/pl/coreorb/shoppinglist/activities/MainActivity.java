@@ -158,8 +158,11 @@ public class MainActivity extends AppCompatActivity {
             switchShoppingListsType(false, true);
             mainFragment.setShownShoppingListsToArchived(false);
             return true;
-        } else if (id == R.id.action_insert_test_data) {
-            createTestData();
+        } else if (id == R.id.action_insert_test_data_en) {
+            createTestData("en");
+            return true;
+        } else if (id == R.id.action_insert_test_data_pl) {
+            createTestData("pl");
             return true;
         }
 
@@ -190,8 +193,9 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Method for debugging purposes inserts new test data into database.
+     * @param lang language, currently: "en" or "pl"
      */
-    private void createTestData() {
+    private void createTestData(String lang) {
         CreateCallback<ShoppingList> callback = new CreateCallback<ShoppingList>() {
             @Override
             public void onSuccess(ShoppingList object) {
@@ -204,6 +208,6 @@ public class MainActivity extends AppCompatActivity {
                 //not used here
             }
         };
-        (new TestData()).createTestData(getContentResolver(), callback);
+        (new TestData()).createTestData(getContentResolver(), lang, callback);
     }
 }
