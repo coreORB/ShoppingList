@@ -31,7 +31,4 @@
     <string name="fragment_list_details_error_update_item">Error occurred while updating item</string>
     <string name="fragment_list_details_error_delete_item">Error occurred while deleting item</string>
 
-
-    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
-    <string name="lorem_ipsum_long">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed leo nec ipsum rhoncus congue quis in augue. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla rutrum dui mauris, ac tincidunt enim feugiat vitae. Pellentesque commodo felis id dapibus malesuada. Nunc mauris dui, efficitur eu condimentum vel, semper eget tellus. Nam vestibulum placerat sapien, eu efficitur lectus eleifend id. Duis ac ipsum pretium, bibendum lacus non, finibus quam. Suspendisse at porta dolor. Vestibulum tincidunt vel nisi vel lacinia. Cras a porttitor mi. Donec pretium, leo a consequat aliquam, neque tortor tempor tortor, non ultrices turpis sem sed mauris. Aliquam mollis bibendum quam. Nunc vitae tortor lectus.</string>
 </resources>
