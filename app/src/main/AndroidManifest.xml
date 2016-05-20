@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="pl.zayer.shoppinglist">
+    package="pl.coreorb.shoppinglist">
 
     <application
         android:allowBackup="true"
@@ -10,13 +10,13 @@
         android:theme="@style/AppTheme">
 
         <provider
-            android:name="pl.zayer.shoppinglist.contentprovider.ShoppingListsContentProvider"
-            android:authorities="pl.zayer.shoppinglist.contentprovider" >
+            android:name="pl.coreorb.shoppinglist.contentprovider.ShoppingListsContentProvider"
+            android:authorities="pl.coreorb.shoppinglist.contentprovider">
         </provider>
 
         <activity
-            android:name=".activities.MainActivity"
-            android:label="@string/activity_main_title"
+            android:name="pl.coreorb.shoppinglist.activities.MainActivity"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,13 +25,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.ListDetailsActivity"
+            android:name="pl.coreorb.shoppinglist.activities.ListDetailsActivity"
             android:label="@string/activity_list_details_title"
-            android:parentActivityName=".activities.MainActivity"
+            android:parentActivityName="pl.coreorb.shoppinglist.activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="pl.zayer.shoppinglist.activities.MainActivity" />
+                android:value="pl.coreorb.shoppinglist.activities.MainActivity" />
         </activity>
     </application>
 

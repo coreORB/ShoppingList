@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Shopping List</string>
+    <string name="app_name">Knot: Shopping List</string>
 
     <string name="snackbar_action_retry">Retry</string>
 
@@ -12,7 +12,7 @@
     <string name="fragment_main_no_shopping_lists">No shopping lists</string>
     <string name="fragment_main_error_message_reading_shopping_lists">Error occurred while reading shopping lists</string>
     <string name="fragment_main_list_item_no_title">No title</string>
-    <string name="fragment_main_list_item_empty_list">List is empty or no unchecked items</string>
+    <string name="fragment_main_list_item_empty_list">No unchecked items</string>
 
     <string name="activity_list_details_title"></string>
     <string name="activity_list_details_action_archive">Archive</string>
