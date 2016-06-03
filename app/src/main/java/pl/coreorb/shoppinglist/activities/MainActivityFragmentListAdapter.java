@@ -1,7 +1,7 @@
 package pl.coreorb.shoppinglist.activities;
 
 import android.content.Context;
-import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -51,34 +51,18 @@ public class MainActivityFragmentListAdapter extends RecyclerView.Adapter<MainAc
             }
         });
         if (item.getTitle().equals("")) {
-            if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                holder.titleTV.setTextColor(mContext.getResources().getColor(R.color.secondaryText));
-            } else {
-                holder.titleTV.setTextColor(mContext.getColor(R.color.secondaryText));
-            }
+            holder.titleTV.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryText));
             holder.titleTV.setText(R.string.fragment_main_list_item_no_title);
         } else {
-            if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                holder.titleTV.setTextColor(mContext.getResources().getColor(R.color.primaryText));
-            } else {
-                holder.titleTV.setTextColor(mContext.getColor(R.color.primaryText));
-            }
+            holder.titleTV.setTextColor(ContextCompat.getColor(mContext, R.color.primaryText));
             holder.titleTV.setText(item.getTitle());
         }
 
         if (item.getUncheckedItemsAsString(", ").equals("")) {
-            if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                holder.contentTV.setTextColor(mContext.getResources().getColor(R.color.divider));
-            } else {
-                holder.contentTV.setTextColor(mContext.getColor(R.color.divider));
-            }
+            holder.contentTV.setTextColor(ContextCompat.getColor(mContext, R.color.divider));
             holder.contentTV.setText(R.string.fragment_main_list_item_empty_list);
         } else {
-            if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                holder.contentTV.setTextColor(mContext.getResources().getColor(R.color.secondaryText));
-            } else {
-                holder.contentTV.setTextColor(mContext.getColor(R.color.secondaryText));
-            }
+            holder.contentTV.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryText));
             holder.contentTV.setText(item.getUncheckedItemsAsString(", "));
         }
     }
