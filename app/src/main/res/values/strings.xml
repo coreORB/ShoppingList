@@ -31,4 +31,6 @@
     <string name="fragment_list_details_error_update_item">Error occurred while updating item</string>
     <string name="fragment_list_details_error_delete_item">Error occurred while deleting item</string>
 
+    <string name="lorem_ipsum">Lorem ipsum</string>
+
 </resources>
