@@ -229,6 +229,7 @@ public class ListDetailsActivity extends AppCompatActivity {
             }
         });
         coordinatorCL.requestFocus();
+        listDetailsFragment.clearFocusOnTitleEditText();
         if (!listDetailsFragment.isQueryRunning()) {
             returnResult();
         } else {

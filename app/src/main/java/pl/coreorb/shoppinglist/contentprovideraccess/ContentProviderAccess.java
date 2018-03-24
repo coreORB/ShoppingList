@@ -102,7 +102,7 @@ public class ContentProviderAccess {
      */
     public void getItemsForShoppingList(final ShoppingList shoppingList, final SelectCallback<Item> callback) {
         Logger.v(LOG_TAG, "getItemsForShoppingList(" + shoppingList + ")");
-        new GetItemsForShoppingList(mContentResolver, callback).execute(shoppingList);
+        new GetItemsForShoppingList(mContentResolver, shoppingList, callback).execute();
     }
 
     /**
@@ -374,7 +374,7 @@ public class ContentProviderAccess {
         }
     }
 
-    private static class DeleteShoppingListTask extends AsyncTask<ShoppingList, Void, Integer> {
+    private static class DeleteShoppingListTask extends AsyncTask<Void, Void, Integer> {
 
         private final WeakReference<ContentResolver> cr;
         private final DeleteCallback<ShoppingList> callback;
@@ -387,19 +387,19 @@ public class ContentProviderAccess {
         }
 
         @Override
-        protected Integer doInBackground(ShoppingList[] params) {
+        protected Integer doInBackground(Void[] params) {
             ContentResolver mContentResolver = cr.get();
             if (mContentResolver == null) return null;
             mContentResolver.delete(
                     ShoppingListsContentProvider.ITEM_CONTENT_URI,
                     ItemsTable.COLUMN_SHOPPING_LIST_ID + " = ?",
-                    new String[]{params[0].getId() + ""}
+                    new String[]{shoppingList.getId() + ""}
             );
 
             return mContentResolver.delete(
                     ShoppingListsContentProvider.SHOPPING_LIST_CONTENT_URI,
                     ShoppingListsTable.COLUMN_ID + " = ?",
-                    new String[]{params[0].getId() + ""}
+                    new String[]{shoppingList.getId() + ""}
             );
         }
 
@@ -412,21 +412,23 @@ public class ContentProviderAccess {
         }
     }
 
-    private static class GetItemsForShoppingList extends AsyncTask<ShoppingList, Void, ArrayList<Item>> {
+    private static class GetItemsForShoppingList extends AsyncTask<Void, Void, ArrayList<Item>> {
 
         private final WeakReference<ContentResolver> cr;
         private final SelectCallback<Item> callback;
+        private ShoppingList shoppingList;
 
-        GetItemsForShoppingList(ContentResolver contentResolver, SelectCallback<Item> callback) {
+        GetItemsForShoppingList(ContentResolver contentResolver, ShoppingList shoppingList, SelectCallback<Item> callback) {
             cr = new WeakReference<>(contentResolver);
+            this.shoppingList = shoppingList;
             this.callback = callback;
         }
 
         @Override
-        protected ArrayList<Item> doInBackground(ShoppingList[] params) {
+        protected ArrayList<Item> doInBackground(Void[] params) {
             ContentResolver mContentResolver = cr.get();
             if (mContentResolver == null) return null;
-            long shoppingListId = params[0].getId();
+            long shoppingListId = shoppingList.getId();
 
             Cursor cursor = mContentResolver.query(
                     ShoppingListsContentProvider.ITEM_CONTENT_URI,

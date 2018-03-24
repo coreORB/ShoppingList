@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 
 import java.util.ArrayList;
 
@@ -544,6 +545,12 @@ public class ListDetailsActivityFragment extends Fragment implements
                 callback.animationFinished();
             }
         }
+    }
+
+    public void clearFocusOnTitleEditText() {
+        View view = listRV.getChildAt(0);
+        EditText editText = view.findViewById(R.id.title_et);
+        editText.clearFocus();
     }
 
     public ShoppingList getCurrentShoppingList() {
