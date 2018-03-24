@@ -8,12 +8,12 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Helper class for SQLite database.
  * Created by ZaYeR on 2016-05-12.
  */
-public class ShoppingListsDatabaseHelper extends SQLiteOpenHelper {
+class ShoppingListsDatabaseHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "shoppingList";
 
-    public ShoppingListsDatabaseHelper(Context context) {
+    ShoppingListsDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

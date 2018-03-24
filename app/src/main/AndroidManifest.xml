@@ -11,8 +11,8 @@
 
         <provider
             android:name="pl.coreorb.shoppinglist.contentprovider.ShoppingListsContentProvider"
-            android:authorities="pl.coreorb.shoppinglist.contentprovider">
-        </provider>
+            android:authorities="pl.coreorb.shoppinglist.contentprovider"
+            android:exported="false" />
 
         <activity
             android:name="pl.coreorb.shoppinglist.activities.MainActivity"

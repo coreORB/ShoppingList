@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:layout_width="match_parent"
@@ -15,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
-            android:textSize="24dp"
+            android:textSize="24sp"
             android:hint="@string/fragment_list_details_list_header_title_hint"/>
     </android.support.design.widget.TextInputLayout>
 
@@ -38,9 +39,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="@dimen/fragment_list_details_list_item_icon_size"
+            android:layout_marginStart="@dimen/fragment_list_details_list_item_icon_size"
             android:drawableTint="@color/secondaryText"
-            android:hint="@string/fragment_list_details_list_header_add_item_hint"/>
+            android:hint="@string/fragment_list_details_list_header_add_item_hint"
+            tools:ignore="UnusedAttribute" />
 
         <ImageView
             android:id="@+id/add_item_iv"
@@ -49,17 +51,16 @@
             android:layout_margin="@dimen/fragment_list_details_list_item_icon_margin"
             android:layout_gravity="center_vertical"
             android:tint="@color/colorAccent"
-            android:src="@drawable/fragment_list_details_list_header_add"/>
+            android:src="@drawable/fragment_list_details_list_header_add"
+            android:contentDescription="@string/fragment_list_details_list_header_add_cd" />
 
     </LinearLayout>
-
-
 
     <TextView
         android:id="@+id/archived_message_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textColor="@color/divider"
         android:textAlignment="center"
         android:drawableTop="@drawable/fragment_list_details_list_header_archived_message"

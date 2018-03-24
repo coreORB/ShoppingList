@@ -3,6 +3,7 @@ package pl.coreorb.shoppinglist.pojos;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,7 +11,6 @@ import java.util.GregorianCalendar;
 
 /**
  * POJO class for storing shopping list, implements Parcelable.
- * Created by ZaYeR on 2016-05-12.
  */
 public class ShoppingList implements Parcelable {
 
@@ -34,6 +34,7 @@ public class ShoppingList implements Parcelable {
         fullyLoaded = false;
     }
 
+    @SuppressWarnings("SameParameterValue")
     public ShoppingList(long id, String title, boolean archived, Calendar createdAt, ArrayList<Item> items, boolean fullyLoaded) {
         this.id = id;
         this.title = title;
@@ -43,7 +44,7 @@ public class ShoppingList implements Parcelable {
         this.fullyLoaded = fullyLoaded;
     }
 
-    public ShoppingList(Parcel in) {
+    private ShoppingList(Parcel in) {
         id = in.readLong();
         title = in.readString();
         archived = in.readByte() != 0;
@@ -60,11 +61,12 @@ public class ShoppingList implements Parcelable {
      * @param separator separator String
      * @return all unchecked items as single String
      */
+    @SuppressWarnings("SameParameterValue")
     public String getUncheckedItemsAsString(String separator) {
         StringBuilder result = new StringBuilder();
         for (int i=0; i<items.size(); i++) {
             if (!items.get(i).isChecked()) {
-                result.append(items.get(i).getContent() + separator);
+                result.append(items.get(i).getContent()).append(separator);
             }
         }
 
@@ -128,6 +130,7 @@ public class ShoppingList implements Parcelable {
      * Sets additional flag telling if ShoppingList and its Items have been fully loaded from database.
      * @param fullyLoaded flag
      */
+    @SuppressWarnings("SameParameterValue")
     public void setFullyLoaded(boolean fullyLoaded) {
         this.fullyLoaded = fullyLoaded;
     }
@@ -180,7 +183,7 @@ public class ShoppingList implements Parcelable {
 
     @Override
     public String toString() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat format = SimpleDateFormat.getDateTimeInstance();
         return "ShoppingList{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
@@ -190,6 +193,7 @@ public class ShoppingList implements Parcelable {
                 '}';
     }
 
+    @SuppressWarnings("unused")
     public static final Creator<ShoppingList> CREATOR = new Creator<ShoppingList>() {
 
         @Override

@@ -15,7 +15,7 @@ public class ItemsTable {
     public static final String COLUMN_CHECKED = "checked";
     public static final String COLUMN_TIMESTAMP = "timestamp";
 
-    public static final String[] COLUMNS_ALL = {
+    static final String[] COLUMNS_ALL = {
             COLUMN_ID,
             COLUMN_SHOPPING_LIST_ID,
             COLUMN_CONTENT,
@@ -32,11 +32,12 @@ public class ItemsTable {
             + COLUMN_TIMESTAMP + " DATETIME"
             + ")";
 
-    public static void onCreate(SQLiteDatabase sqLiteDatabase) {
+    static void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CREATE_TABLE_ITEMS);
     }
 
-    public static void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
+    @SuppressWarnings("unused")
+    static void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEMS);
         onCreate(sqLiteDatabase);
     }

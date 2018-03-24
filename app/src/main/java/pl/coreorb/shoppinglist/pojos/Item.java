@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 /**
  * POJO class for storing shopping lists items, implements Parcelable.
- * Created by ZaYeR on 2016-05-12.
  */
 public class Item implements Parcelable {
 
@@ -19,13 +18,13 @@ public class Item implements Parcelable {
         checked = false;
     }
 
-    public Item(Parcel in) {
+    private Item(Parcel in) {
         id = in.readLong();
         content = in.readString();
         checked = in.readByte() != 0;
     }
 
-    public Item(long id, long shoppingListId, String content, boolean checked) {
+    public Item(long id, String content, boolean checked) {
         this.id = id;
         this.content = content;
         this.checked = checked;
@@ -67,7 +66,7 @@ public class Item implements Parcelable {
         dest.writeByte((byte) (checked ? 1 : 0));
     }
 
-    public static final Creator<Item> CREATOR = new Creator<Item>() {
+    static final Creator<Item> CREATOR = new Creator<Item>() {
 
         @Override
         public Item createFromParcel(Parcel source) {

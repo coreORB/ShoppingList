@@ -5,7 +5,7 @@ import android.util.Log;
 import pl.coreorb.shoppinglist.BuildConfig;
 
 /**
- * Created by ZaYeR on 2016-05-19.
+ * Class for adjusting log output.
  */
 public class Logger {
 
@@ -32,11 +32,13 @@ public class Logger {
             Log.d(tag, msg);
     }
 
+    @SuppressWarnings("unused")
     public static void i(String tag, String msg) {
         if (BuildConfig.DEBUG && DEBUG_LEVEL >= 4 || !BuildConfig.DEBUG && RELEASE_LEVEL >= 4)
             Log.i(tag, msg);
     }
 
+    @SuppressWarnings("unused")
     public static void w(String tag, String msg) {
         if (BuildConfig.DEBUG && DEBUG_LEVEL >= 3 || !BuildConfig.DEBUG && RELEASE_LEVEL >= 3)
             Log.w(tag, msg);
@@ -47,6 +49,7 @@ public class Logger {
             Log.e(tag, msg);
     }
 
+    @SuppressWarnings("unused")
     public static void wtf(String tag, String msg) {
         if (BuildConfig.DEBUG && DEBUG_LEVEL >= 1 || !BuildConfig.DEBUG && RELEASE_LEVEL >= 1)
             Log.wtf(tag, msg);

@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         Logger.v(LOG_TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle(R.string.activity_main_title);
 
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         prepareAnimations();
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Changes activity title and floating action button visibility depending on parameter.
-     * @param archived wherever activity shows arhived shopping list or not
+     * @param archived wherever activity shows archived shopping list or not
      */
     private void switchShoppingListsType(boolean archived, boolean animate) {
         Logger.v(LOG_TAG, "switchShoppingListsType()");
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(int errorCode) {
+            public void onFailure() {
                 //not used here
             }
         };

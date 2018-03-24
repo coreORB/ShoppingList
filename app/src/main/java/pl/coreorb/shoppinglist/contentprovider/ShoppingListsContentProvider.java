@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.util.Arrays;
@@ -19,7 +20,6 @@ import java.util.HashSet;
  */
 public class ShoppingListsContentProvider extends ContentProvider {
 
-    private static final String LOG_TAG = ShoppingListsContentProvider.class.getSimpleName();
     private ShoppingListsDatabaseHelper database;
 
     private static final int SHOPPING_LISTS = 10;
@@ -36,15 +36,19 @@ public class ShoppingListsContentProvider extends ContentProvider {
 
     public static final Uri SHOPPING_LIST_CONTENT_URI =
             Uri.parse("content://" + AUTHORITY + "/" + SHOPPING_LIST_BASE_PATH);
+    @SuppressWarnings("unused")
     public static final String SHOPPING_LIST_CONTENT_TYPE =
             ContentResolver.CURSOR_DIR_BASE_TYPE + "/shopping_lists";
+    @SuppressWarnings("unused")
     public static final String SHOPPING_LIST_CONTENT_ITEM_TYPE =
             ContentResolver.CURSOR_ITEM_BASE_TYPE + "/shopping_list";
 
     public static final Uri ITEM_CONTENT_URI =
             Uri.parse("content://" + AUTHORITY + "/" + ITEM_BASE_PATH);
+    @SuppressWarnings("unused")
     public static final String ITEM_CONTENT_TYPE =
             ContentResolver.CURSOR_DIR_BASE_TYPE + "/items";
+    @SuppressWarnings("unused")
     public static final String ITEM_CONTENT_ITEM_TYPE =
             ContentResolver.CURSOR_ITEM_BASE_TYPE + "/item";
 
@@ -67,7 +71,7 @@ public class ShoppingListsContentProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         switch(sURIMatcher.match(uri)) {
@@ -107,18 +111,19 @@ public class ShoppingListsContentProvider extends ContentProvider {
         SQLiteDatabase db = database.getReadableDatabase();
         Cursor cursor = queryBuilder.query(db, projection, selection, selectionArgs,
                 null, null, sortOrder);
+        assert getContext() != null;
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
         return cursor;
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         return null;
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues contentValues) {
+    public Uri insert(@NonNull Uri uri, ContentValues contentValues) {
         SQLiteDatabase db = database.getWritableDatabase();
         Uri _uri;
         long id;
@@ -134,12 +139,13 @@ public class ShoppingListsContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
+        assert getContext() != null;
         getContext().getContentResolver().notifyChange(uri, null);
         return _uri;
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase db = database.getWritableDatabase();
         int rowsDeleted;
         String id;
@@ -174,13 +180,14 @@ public class ShoppingListsContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
+        assert getContext() != null;
         getContext().getContentResolver().notifyChange(uri, null);
 
         return rowsDeleted;
     }
 
     @Override
-    public int update(Uri uri, ContentValues contentValues, String selection,
+    public int update(@NonNull Uri uri, ContentValues contentValues, String selection,
                       String[] selectionArgs) {
         SQLiteDatabase db = database.getWritableDatabase();
         int rowsUpdated;
@@ -218,6 +225,7 @@ public class ShoppingListsContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
+        assert getContext() != null;
         getContext().getContentResolver().notifyChange(uri, null);
 
         return rowsUpdated;
@@ -225,8 +233,8 @@ public class ShoppingListsContentProvider extends ContentProvider {
 
     private void checkColumnsShoppingList(String[] projection) {
         if (projection != null) {
-            HashSet<String> requestedColumns = new HashSet<String>(Arrays.asList(projection));
-            HashSet<String> availableColumns = new HashSet<String>(Arrays.asList(ShoppingListsTable.COLUMNS_ALL));
+            HashSet<String> requestedColumns = new HashSet<>(Arrays.asList(projection));
+            HashSet<String> availableColumns = new HashSet<>(Arrays.asList(ShoppingListsTable.COLUMNS_ALL));
             if (!availableColumns.containsAll(requestedColumns)) {
                 throw new IllegalArgumentException("Unknown columns in projection");
             }
@@ -235,8 +243,8 @@ public class ShoppingListsContentProvider extends ContentProvider {
 
     private void checkColumnsItem(String[] projection) {
         if (projection != null) {
-            HashSet<String> requestedColumns = new HashSet<String>(Arrays.asList(projection));
-            HashSet<String> availableColumns = new HashSet<String>(Arrays.asList(ItemsTable.COLUMNS_ALL));
+            HashSet<String> requestedColumns = new HashSet<>(Arrays.asList(projection));
+            HashSet<String> availableColumns = new HashSet<>(Arrays.asList(ItemsTable.COLUMNS_ALL));
             if (!availableColumns.containsAll(requestedColumns)) {
                 throw new IllegalArgumentException("Unknown columns in projection");
             }
@@ -245,8 +253,8 @@ public class ShoppingListsContentProvider extends ContentProvider {
 
     private void checkColumnsShoppingListAndItems(String[] projection) {
         if (projection != null) {
-            HashSet<String> requestedColumns = new HashSet<String>(Arrays.asList(projection));
-            HashSet<String> availableColumns = new HashSet<String>(Arrays.asList(ShoppingListsTable.COLUMNS_ALL));
+            HashSet<String> requestedColumns = new HashSet<>(Arrays.asList(projection));
+            HashSet<String> availableColumns = new HashSet<>(Arrays.asList(ShoppingListsTable.COLUMNS_ALL));
             availableColumns.addAll(Arrays.asList(ItemsTable.COLUMNS_ALL));
             if (!availableColumns.containsAll(requestedColumns)) {
                 throw new IllegalArgumentException("Unknown columns in projection");

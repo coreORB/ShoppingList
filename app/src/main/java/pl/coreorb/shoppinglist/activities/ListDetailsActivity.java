@@ -50,12 +50,13 @@ public class ListDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        coordinatorCL = (CoordinatorLayout) findViewById(R.id.coordinator_cl);
+        coordinatorCL = findViewById(R.id.coordinator_cl);
 
         if (getSupportFragmentManager().findFragmentByTag(TAG_FRAGMENT_LIST_DETAILS) != null) {
             listDetailsFragment = (ListDetailsActivityFragment)
@@ -65,7 +66,7 @@ public class ListDetailsActivity extends AppCompatActivity {
             if (args != null && args.containsKey(ARG_SHOPPING_LIST)) {
                 //if shopping list is provided in activity args, then enable edit mode
                 ShoppingList initialShoppingList = args.getParcelable(ARG_SHOPPING_LIST);
-                listArchived = initialShoppingList.isArchived();
+                listArchived = (initialShoppingList != null) && initialShoppingList.isArchived();
                 listDetailsFragment = ListDetailsActivityFragment.newInstance(initialShoppingList);
                 newMode = false;
             } else {
@@ -144,7 +145,7 @@ public class ListDetailsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(int errorCode) {
+            public void onFailure() {
                 Snackbar.make(coordinatorCL, R.string.fragment_list_details_error_update_shopping_list, Snackbar.LENGTH_LONG)
                         .setAction(R.string.snackbar_action_retry, new View.OnClickListener() {
                             @Override
@@ -187,7 +188,7 @@ public class ListDetailsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(int errorCode) {
+            public void onFailure() {
                 Snackbar.make(coordinatorCL, R.string.fragment_list_details_error_delete_shopping_list, Snackbar.LENGTH_LONG)
                         .setAction(R.string.snackbar_action_retry, new View.OnClickListener() {
                             @Override

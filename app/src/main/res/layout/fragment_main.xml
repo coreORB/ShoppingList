@@ -22,29 +22,15 @@
         android:indeterminate="true"
         app:mpb_progressStyle="circular"/>
 
-    <LinearLayout
-        android:id="@+id/no_lists_ll"
+    <TextView
+        android:id="@+id/no_lists_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:tint="@color/divider"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/fragment_main_no_shopping_lists"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24dp"
-            android:fontFamily="sans-serif-light"
-            android:textColor="@color/divider"
-            android:text="@string/fragment_main_no_shopping_lists"/>
-
-    </LinearLayout>
-
+        android:layout_centerInParent="true"
+        android:drawableTop="@drawable/fragment_main_no_shopping_lists"
+        android:textSize="24sp"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@color/divider"
+        android:text="@string/fragment_main_no_shopping_lists" />
 
 </RelativeLayout>

@@ -1,7 +1,7 @@
 package pl.coreorb.shoppinglist.utils;
 
 /**
- * Created by ZaYeR on 2016-05-18.
+ * Callback executed when animation is finished.
  */
 public interface AnimationFinishedCallback {
     void animationFinished();

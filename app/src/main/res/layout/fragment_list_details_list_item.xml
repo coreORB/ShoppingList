@@ -20,7 +20,8 @@
         android:layout_weight="1"
         android:background="@color/transparent"
         android:layout_gravity="center_vertical"
-        tools:text="@string/lorem_ipsum"/>
+        tools:text="@string/lorem_ipsum"
+        tools:ignore="LabelFor,TextFields" />
 
     <ImageView
         android:id="@+id/remove_iv"
@@ -28,6 +29,7 @@
         android:layout_height="32dp"
         android:layout_margin="8dp"
         android:tint="@color/secondaryText"
-        android:src="@drawable/fragment_list_details_list_item_remove"/>
+        android:src="@drawable/fragment_list_details_list_item_remove"
+        android:contentDescription="@string/fragment_list_details_list_item_remove_cd" />
 
 </LinearLayout>

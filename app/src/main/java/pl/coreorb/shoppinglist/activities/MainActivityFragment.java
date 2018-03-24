@@ -3,6 +3,7 @@ package pl.coreorb.shoppinglist.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -16,7 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -37,12 +38,12 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
 
     private static final String STATE_SHOPPING_LISTS = "state_shopping_lists";
 
-    public static final int REQUEST_CODE_LIST_DETAILS = 5001;
+    private static final int REQUEST_CODE_LIST_DETAILS = 5001;
 
     private RecyclerView listRV;
     private MainActivityFragmentListAdapter adapter;
     private MaterialProgressBar loadingMPB;
-    private LinearLayout noListsLL;
+    private TextView noListsTV;
 
     private Animation fadeIn;
     private Animation fadeOut;
@@ -51,7 +52,7 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
     private Animation scale110To100FadeIn;
     private Animation scale100To110FadeOut;
     //booleans used in method hideAllViews()
-    boolean listHidden, loadingHidden, noListsHidden = false;
+    private boolean listHidden, loadingHidden, noListsHidden = false;
 
     private ArrayList<ShoppingList> currentShoppingLists;
 
@@ -61,15 +62,15 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Logger.v(LOG_TAG, "onCreateView()");
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         //get views
-        listRV = (RecyclerView) rootView.findViewById(R.id.list_rv);
-        loadingMPB = (MaterialProgressBar) rootView.findViewById(R.id.loading_mpb);
-        noListsLL = (LinearLayout) rootView.findViewById(R.id.no_lists_ll);
+        listRV = rootView.findViewById(R.id.list_rv);
+        loadingMPB = rootView.findViewById(R.id.loading_mpb);
+        noListsTV = rootView.findViewById(R.id.no_lists_tv);
 
         //get animations
         fadeIn = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
@@ -85,7 +86,7 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
         listRV.setAdapter(adapter);
         DefaultItemAnimator animator = new DefaultItemAnimator() {
             @Override
-            public boolean canReuseUpdatedViewHolder(RecyclerView.ViewHolder viewHolder) {
+            public boolean canReuseUpdatedViewHolder(@NonNull RecyclerView.ViewHolder viewHolder) {
                 return true;
             }
         };
@@ -128,6 +129,7 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
      */
     private void loadShoppingLists(final boolean archived, @Nullable final Animation anim) {
         Logger.v(LOG_TAG, "loadShoppingLists(" + archived + ")");
+        assert getActivity() != null;
         ContentProviderAccess cpa = new ContentProviderAccess(getActivity().getContentResolver());
         SelectCallback<ShoppingList> callback = new SelectCallback<ShoppingList>() {
             @Override
@@ -141,20 +143,22 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
             }
 
             @Override
-            public void onFailure(int errorCode) {
+            public void onFailure() {
                 hideViewLoading(true, new AnimationFinishedCallback() {
                     @Override
                     public void animationFinished() {
                         showViewNoListsMessage(true, anim, null);
                     }
                 });
-                Snackbar.make(getView(), R.string.fragment_main_error_message_reading_shopping_lists, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.snackbar_action_retry, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                loadShoppingLists(archived, anim);
-                            }
-                        }).show();
+                if (getView() != null) {
+                    Snackbar.make(getView(), R.string.fragment_main_error_message_reading_shopping_lists, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.snackbar_action_retry, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    loadShoppingLists(archived, anim);
+                                }
+                            }).show();
+                }
             }
         };
         cpa.getShoppingListsAndUncheckedItems(archived, callback);
@@ -169,8 +173,10 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
         Intent intent = new Intent(getContext(), ListDetailsActivity.class);
         ActivityOptionsCompat options = ActivityOptionsCompat.makeScaleUpAnimation(
                 view, (int) view.getX(), (int) view.getY(), view.getWidth(), view.getHeight());
-        ActivityCompat.startActivityForResult(MainActivityFragment.this.getActivity(), intent,
-                REQUEST_CODE_LIST_DETAILS, options.toBundle());
+        if (MainActivityFragment.this.getActivity() != null) {
+            ActivityCompat.startActivityForResult(MainActivityFragment.this.getActivity(), intent,
+                    REQUEST_CODE_LIST_DETAILS, options.toBundle());
+        }
     }
 
     /**
@@ -185,8 +191,10 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
         intent.putExtra(ListDetailsActivity.ARG_SHOPPING_LIST, shoppingList);
         ActivityOptionsCompat options = ActivityOptionsCompat.makeScaleUpAnimation(
                 view, (int) view.getX(), (int) view.getY(), view.getWidth(), view.getHeight());
-        ActivityCompat.startActivityForResult(MainActivityFragment.this.getActivity(), intent,
-                REQUEST_CODE_LIST_DETAILS, options.toBundle());
+        if (MainActivityFragment.this.getActivity() != null) {
+            ActivityCompat.startActivityForResult(MainActivityFragment.this.getActivity(), intent,
+                    REQUEST_CODE_LIST_DETAILS, options.toBundle());
+        }
     }
 
     /**
@@ -272,7 +280,7 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
             @Override
             public void animationFinished() {
                 listHidden = true;
-                if (listHidden && loadingHidden && noListsHidden) {
+                if (loadingHidden && noListsHidden) {
                     if (callback != null) callback.animationFinished();
                 }
             }
@@ -281,7 +289,7 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
             @Override
             public void animationFinished() {
                 loadingHidden = true;
-                if (listHidden && loadingHidden && noListsHidden) {
+                if (listHidden && noListsHidden) {
                     if (callback != null) callback.animationFinished();
                 }
             }
@@ -290,7 +298,7 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
             @Override
             public void animationFinished() {
                 noListsHidden = true;
-                if (listHidden && loadingHidden && noListsHidden) {
+                if (listHidden && loadingHidden) {
                     if (callback != null) callback.animationFinished();
                 }
             }
@@ -304,6 +312,7 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
      * @param anim     Animation object to use for animation (optional)
      * @param callback called when view is done showing (optional)
      */
+    @SuppressWarnings("SameParameterValue")
     private void showViewList(boolean animate, @Nullable Animation anim,
                               @Nullable final AnimationFinishedCallback callback) {
         Logger.v(LOG_TAG, "showViewList(" + animate + ", " + callback + ")");
@@ -414,6 +423,7 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
      * @param animate  if true showing view will be animated, otherwise change will be instant
      * @param callback called when view is done showing (optional)
      */
+    @SuppressWarnings("SameParameterValue")
     private void showViewLoading(boolean animate, @Nullable final AnimationFinishedCallback callback) {
         Logger.v(LOG_TAG, "showViewLoading(" + animate + ", " + callback + ")");
         if (loadingMPB.getVisibility() == View.VISIBLE) {
@@ -506,10 +516,11 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
      * @param anim     Animation object to use for animation (optional)
      * @param callback called when view is done showing (optional)
      */
+    @SuppressWarnings("SameParameterValue")
     private void showViewNoListsMessage(boolean animate, @Nullable Animation anim,
                                         @Nullable final AnimationFinishedCallback callback) {
         Logger.v(LOG_TAG, "showViewNoListsMessage(" + animate + ", " + callback + ")");
-        if (noListsLL.getVisibility() == View.VISIBLE) {
+        if (noListsTV.getVisibility() == View.VISIBLE) {
             //view is already shown, just exit
             Logger.d(LOG_TAG, "view already shown");
             if (callback != null) {
@@ -530,7 +541,7 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-                    noListsLL.setVisibility(View.VISIBLE);
+                    noListsTV.setVisibility(View.VISIBLE);
                 }
 
                 @Override
@@ -545,9 +556,9 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
                     //do nothing
                 }
             });
-            noListsLL.startAnimation(animation);
+            noListsTV.startAnimation(animation);
         } else {
-            noListsLL.setVisibility(View.VISIBLE);
+            noListsTV.setVisibility(View.VISIBLE);
             if (callback != null) {
                 callback.animationFinished();
             }
@@ -564,7 +575,7 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
     private void hideViewNoListsMessage(boolean animate, @Nullable Animation anim,
                                         @Nullable final AnimationFinishedCallback callback) {
         Logger.v(LOG_TAG, "hideViewNoListsMessage(" + animate + ", " + callback + ")");
-        if (noListsLL.getVisibility() == View.GONE || noListsLL.getVisibility() == View.INVISIBLE) {
+        if (noListsTV.getVisibility() == View.GONE || noListsTV.getVisibility() == View.INVISIBLE) {
             //view is already hidden, just exit
             Logger.d(LOG_TAG, "view already hidden");
             if (callback != null) {
@@ -590,7 +601,7 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    noListsLL.setVisibility(View.GONE);
+                    noListsTV.setVisibility(View.GONE);
                     if (callback != null) {
                         callback.animationFinished();
                     }
@@ -601,9 +612,9 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
                     //do nothing
                 }
             });
-            noListsLL.startAnimation(animation);
+            noListsTV.startAnimation(animation);
         } else {
-            noListsLL.setVisibility(View.GONE);
+            noListsTV.setVisibility(View.GONE);
             if (callback != null) {
                 callback.animationFinished();
             }
@@ -626,7 +637,7 @@ public class MainActivityFragment extends Fragment implements MainActivityFragme
      * @param outState bundle to which state will be saved
      */
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         Logger.v(LOG_TAG, "onSaveInstanceState()");
         outState.putParcelableArrayList(STATE_SHOPPING_LISTS, currentShoppingLists);
         super.onSaveInstanceState(outState);

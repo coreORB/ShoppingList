@@ -1,12 +1,12 @@
 package pl.coreorb.shoppinglist.contentprovideraccess;
 
 /**
- * Created by ZaYeR on 2016-05-12.
+ * Callback executed when object is deleted from DB.
  */
 public interface DeleteCallback<T> {
 
-    public void onSuccess(T object);
+    void onSuccess(T object);
 
-    public void onFailure(int errorCode);
+    void onFailure();
 
 }

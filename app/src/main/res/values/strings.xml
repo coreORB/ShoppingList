@@ -15,13 +15,15 @@
     <string name="fragment_main_list_item_no_title">No title</string>
     <string name="fragment_main_list_item_empty_list">No unchecked items</string>
 
-    <string name="activity_list_details_title"></string>
+    <string name="activity_list_details_title" />
     <string name="activity_list_details_action_archive">Archive</string>
     <string name="activity_list_details_action_delete">Delete</string>
     <string name="fragment_list_details_list_header_title_hint">Title</string>
     <string name="fragment_list_details_list_header_archived_message">Shopping list is archived.\nEditing is disabled!</string>
     <string name="fragment_list_details_list_header_add_item_hint">Add item</string>
     <string name="fragment_list_details_list_header_item_no_content_message">Item must have content!</string>
+    <string name="fragment_list_details_list_header_add_cd">Add item to list</string>
+    <string name="fragment_list_details_list_item_remove_cd">Remove item from list</string>
 
     <string name="fragment_list_details_error_create_shopping_list">Error occurred while creating shopping list</string>
     <string name="fragment_list_details_error_update_shopping_list">Error occurred while updating shopping list</string>

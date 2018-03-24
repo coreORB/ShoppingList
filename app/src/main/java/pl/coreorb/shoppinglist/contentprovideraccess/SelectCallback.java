@@ -3,12 +3,12 @@ package pl.coreorb.shoppinglist.contentprovideraccess;
 import java.util.ArrayList;
 
 /**
- * Created by ZaYeR on 2016-05-12.
+ * Callback executed when object is selected from DB.
  */
 public interface SelectCallback<T> {
 
-    public void onSuccess(ArrayList<T> objects);
+    void onSuccess(ArrayList<T> objects);
 
-    public void onFailure(int errorCode);
+    void onFailure();
 
 }

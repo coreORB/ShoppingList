@@ -14,7 +14,7 @@ public class ShoppingListsTable {
     public static final String COLUMN_ARCHIVED = "archived";
     public static final String COLUMN_CREATED_AT = "created_at";
 
-    public static final String[] COLUMNS_ALL = {
+    static final String[] COLUMNS_ALL = {
             COLUMN_ID,
             COLUMN_TITLE,
             COLUMN_ARCHIVED,
@@ -29,11 +29,12 @@ public class ShoppingListsTable {
             + COLUMN_CREATED_AT + " DATETIME"
             + ")";
 
-    public static void onCreate(SQLiteDatabase sqLiteDatabase) {
+    static void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CREATE_TABLE_SHOPPING_LISTS);
     }
 
-    public static void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
+    @SuppressWarnings("unused")
+    static void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_LISTS);
         onCreate(sqLiteDatabase);
     }

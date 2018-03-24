@@ -2,6 +2,7 @@ package pl.coreorb.shoppinglist.activities;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,30 +23,28 @@ import pl.coreorb.shoppinglist.pojos.Item;
 /**
  * RecyclerView for ListDetailsActivityFragment fragment.
  */
-public class ListDetailsActivityFragmentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-    private static final String LOG_TAG = ListDetailsActivityFragmentListAdapter.class.getSimpleName();
+class ListDetailsActivityFragmentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     //constant for types of rows
     private static final int ROW_TYPE_HEADER = 1;
     private static final int ROW_TYPE_REGULAR = 2;
 
-    private Context mContext;
-    private ArrayList<Item> mItems;
-    private OnItemAddedListener mAddedListener;
-    private OnItemEditedListener mEditedListener;
-    private OnItemRemoveClickedListener mRemoveClickedListener;
-    private OnShoppingListTitleEditedListener mTitleEditedListener;
-    private boolean mShoppingListArchived;
+    private final Context mContext;
+    private final ArrayList<Item> mItems;
+    private final OnItemAddedListener mAddedListener;
+    private final OnItemEditedListener mEditedListener;
+    private final OnItemRemoveClickedListener mRemoveClickedListener;
+    private final OnShoppingListTitleEditedListener mTitleEditedListener;
+    private final boolean mShoppingListArchived;
     private String mShoppingListTitle;
 
-    public ListDetailsActivityFragmentListAdapter(Context context, boolean shoppingListArchived,
-                                                  String shoppingListTitle,
-                                                  ArrayList<Item> items,
-                                                  OnItemRemoveClickedListener listener,
-                                                  OnItemEditedListener editedListener,
-                                                  OnItemAddedListener addedListener,
-                                                  OnShoppingListTitleEditedListener titleEditedListener) {
+    ListDetailsActivityFragmentListAdapter(Context context, boolean shoppingListArchived,
+                                           String shoppingListTitle,
+                                           ArrayList<Item> items,
+                                           OnItemRemoveClickedListener listener,
+                                           OnItemEditedListener editedListener,
+                                           OnItemAddedListener addedListener,
+                                           OnShoppingListTitleEditedListener titleEditedListener) {
         mContext = context;
         mShoppingListArchived = shoppingListArchived;
         mShoppingListTitle = shoppingListTitle;
@@ -60,21 +59,24 @@ public class ListDetailsActivityFragmentListAdapter extends RecyclerView.Adapter
      * Sets title of shopping list in adapter.
      * @param title title of shopping list
      */
-    public void setShoppingListTitle(String title) {
+    void setShoppingListTitle(String title) {
         mShoppingListTitle = title;
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder viewHolder = null;
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        RecyclerView.ViewHolder viewHolder;
+        View view;
         switch (viewType) {
             case ROW_TYPE_HEADER:
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_list_details_list_header, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_list_details_list_header, parent, false);
                 viewHolder = new HeaderViewHolder(view);
                 break;
             case ROW_TYPE_REGULAR:
-                View view2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_list_details_list_item, parent, false);
-                viewHolder = new RegularViewHolder(view2);
+            default:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_list_details_list_item, parent, false);
+                viewHolder = new RegularViewHolder(view);
                 break;
         }
 
@@ -91,7 +93,7 @@ public class ListDetailsActivityFragmentListAdapter extends RecyclerView.Adapter
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (getItemViewType(position) == ROW_TYPE_HEADER) {
             HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
             bindHeaderViewHolder(headerHolder);
@@ -207,20 +209,20 @@ public class ListDetailsActivityFragmentListAdapter extends RecyclerView.Adapter
      * Otherwise, information that shopping list is archived will be shown.
      */
     public static class HeaderViewHolder extends RecyclerView.ViewHolder {
-        protected TextInputEditText titleET;
-        protected LinearLayout addItemLL;
-        protected EditText addItemET;
-        protected ImageView addItemIV;
-        protected TextView archivedMessageTV;
+        final TextInputEditText titleET;
+        final LinearLayout addItemLL;
+        final EditText addItemET;
+        final ImageView addItemIV;
+        final TextView archivedMessageTV;
 
 
-        public HeaderViewHolder(View itemView) {
+        HeaderViewHolder(View itemView) {
             super(itemView);
-            this.titleET = (TextInputEditText) itemView.findViewById(R.id.title_et);
-            this.addItemLL = (LinearLayout) itemView.findViewById(R.id.add_item_ll);
-            this.addItemET = (EditText) itemView.findViewById(R.id.add_item_et);
-            this.addItemIV = (ImageView) itemView.findViewById(R.id.add_item_iv);
-            this.archivedMessageTV = (TextView) itemView.findViewById(R.id.archived_message_tv);
+            this.titleET = itemView.findViewById(R.id.title_et);
+            this.addItemLL = itemView.findViewById(R.id.add_item_ll);
+            this.addItemET = itemView.findViewById(R.id.add_item_et);
+            this.addItemIV = itemView.findViewById(R.id.add_item_iv);
+            this.archivedMessageTV = itemView.findViewById(R.id.archived_message_tv);
         }
     }
 
@@ -229,16 +231,16 @@ public class ListDetailsActivityFragmentListAdapter extends RecyclerView.Adapter
      * archived. Otherwise updating and removing of item will be enabled.
      */
     public static class RegularViewHolder extends RecyclerView.ViewHolder {
-        protected CheckBox checkedCB;
-        protected EditText contentET;
-        protected ImageView removeIV;
+        final CheckBox checkedCB;
+        final EditText contentET;
+        final ImageView removeIV;
 
 
-        public RegularViewHolder(View itemView) {
+        RegularViewHolder(View itemView) {
             super(itemView);
-            this.checkedCB = (CheckBox) itemView.findViewById(R.id.checked_cb);
-            this.contentET = (EditText) itemView.findViewById(R.id.content_tv);
-            this.removeIV = (ImageView) itemView.findViewById(R.id.remove_iv);
+            this.checkedCB = itemView.findViewById(R.id.checked_cb);
+            this.contentET = itemView.findViewById(R.id.content_tv);
+            this.removeIV = itemView.findViewById(R.id.remove_iv);
         }
     }
 

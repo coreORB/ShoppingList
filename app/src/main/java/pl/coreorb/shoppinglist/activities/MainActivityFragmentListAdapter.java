@@ -1,6 +1,7 @@
 package pl.coreorb.shoppinglist.activities;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -19,29 +20,29 @@ import pl.coreorb.shoppinglist.pojos.ShoppingList;
  */
 public class MainActivityFragmentListAdapter extends RecyclerView.Adapter<MainActivityFragmentListAdapter.ViewHolder> {
 
-    private Context mContext;
+    private final Context mContext;
     private ArrayList<ShoppingList> mShoppingLists;
-    private OnShoppingListClickedListener mListener;
+    private final OnShoppingListClickedListener mListener;
 
-    public MainActivityFragmentListAdapter(Context context, OnShoppingListClickedListener listener) {
+    MainActivityFragmentListAdapter(Context context, OnShoppingListClickedListener listener) {
         mContext = context;
         mListener = listener;
         mShoppingLists = new ArrayList<>();
     }
 
-    public void setShoppingLists(ArrayList<ShoppingList> shoppingLists) {
+    void setShoppingLists(ArrayList<ShoppingList> shoppingLists) {
         mShoppingLists = shoppingLists;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_main_list_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final ShoppingList item = mShoppingLists.get(position);
 
         holder.mainCV.setOnClickListener(new View.OnClickListener() {
@@ -73,17 +74,17 @@ public class MainActivityFragmentListAdapter extends RecyclerView.Adapter<MainAc
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        protected CardView mainCV;
-        protected TextView titleTV;
-        protected TextView contentTV;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        final CardView mainCV;
+        final TextView titleTV;
+        final TextView contentTV;
 
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
-            this.mainCV = (CardView) itemView.findViewById(R.id.main_cv);
-            this.titleTV = (TextView) itemView.findViewById(R.id.title_tv);
-            this.contentTV = (TextView) itemView.findViewById(R.id.content_tv);
+            this.mainCV = itemView.findViewById(R.id.main_cv);
+            this.titleTV = itemView.findViewById(R.id.title_tv);
+            this.contentTV = itemView.findViewById(R.id.content_tv);
         }
     }
 

@@ -1,6 +1,7 @@
 package pl.coreorb.shoppinglist.activities;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -50,7 +51,7 @@ public class ListDetailsActivityFragment extends Fragment implements
     private Animation scale90To100FadeIn;
     private Animation scale100To90FadeOut;
     //booleans used in method hideAllViews()
-    boolean listHidden, loadingHidden = false;
+    private boolean listHidden, loadingHidden = false;
 
     private ContentProviderAccess contentProviderAccess;
     private ShoppingList currentShoppingList;
@@ -74,20 +75,21 @@ public class ListDetailsActivityFragment extends Fragment implements
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Logger.v(LOG_TAG, "onCreateView()");
         View rootView = inflater.inflate(R.layout.fragment_list_details, container, false);
 
         //get views
-        listRV = (RecyclerView) rootView.findViewById(R.id.list_rv);
-        loadingMPB = (MaterialProgressBar) rootView.findViewById(R.id.loading_mpb);
+        listRV = rootView.findViewById(R.id.list_rv);
+        loadingMPB = rootView.findViewById(R.id.loading_mpb);
 
         //get animations
         scale90To100FadeIn = AnimationUtils.loadAnimation(getContext(), R.anim.scale_90_to_100_fade_in);
         scale100To90FadeOut = AnimationUtils.loadAnimation(getContext(), R.anim.scale_100_to_90_fade_out);
 
-        contentProviderAccess = new ContentProviderAccess(getActivity().getContentResolver());
+        assert getContext() != null;
+        contentProviderAccess = new ContentProviderAccess(getContext().getContentResolver());
 
         hideAllViews(false, null);
 
@@ -126,14 +128,16 @@ public class ListDetailsActivityFragment extends Fragment implements
             }
 
             @Override
-            public void onFailure(int errorCode) {
-                Snackbar.make(getView(), R.string.fragment_list_details_error_create_item, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.snackbar_action_retry, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                onCreateViewEditList(currentShoppingList);
-                            }
-                        }).show();
+            public void onFailure() {
+                if (getView() != null) {
+                    Snackbar.make(getView(), R.string.fragment_list_details_error_create_shopping_list, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.snackbar_action_retry, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    onCreateViewEditList(currentShoppingList);
+                                }
+                            }).show();
+                }
             }
         };
         contentProviderAccess.createShoppingList(currentShoppingList, callback);
@@ -177,14 +181,16 @@ public class ListDetailsActivityFragment extends Fragment implements
                 }
 
                 @Override
-                public void onFailure(int errorCode) {
-                    Snackbar.make(getView(), R.string.fragment_list_details_error_reading_items, Snackbar.LENGTH_LONG)
-                            .setAction(R.string.snackbar_action_retry, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    onCreateViewNewList();
-                                }
-                            }).show();
+                public void onFailure() {
+                    if (getView() != null) {
+                        Snackbar.make(getView(), R.string.fragment_list_details_error_reading_items, Snackbar.LENGTH_LONG)
+                                .setAction(R.string.snackbar_action_retry, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        onCreateViewNewList();
+                                    }
+                                }).show();
+                    }
                 }
             };
             contentProviderAccess.getItemsForShoppingList(currentShoppingList, callback);
@@ -202,7 +208,7 @@ public class ListDetailsActivityFragment extends Fragment implements
         listRV.setAdapter(adapter);
         DefaultItemAnimator animator = new DefaultItemAnimator() {
             @Override
-            public boolean canReuseUpdatedViewHolder(RecyclerView.ViewHolder viewHolder) {
+            public boolean canReuseUpdatedViewHolder(@NonNull RecyclerView.ViewHolder viewHolder) {
                 return true;
             }
         };
@@ -223,15 +229,17 @@ public class ListDetailsActivityFragment extends Fragment implements
             }
 
             @Override
-            public void onFailure(int errorCode) {
-                Snackbar.make(getView(), R.string.fragment_list_details_error_create_item, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.snackbar_action_retry, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                onItemAdded(item);
-                            }
-                        }).show();
-                queryRunning = false;
+            public void onFailure() {
+                if (getView() != null) {
+                    Snackbar.make(getView(), R.string.fragment_list_details_error_create_item, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.snackbar_action_retry, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    onItemAdded(item);
+                                }
+                            }).show();
+                    queryRunning = false;
+                }
             }
         };
         contentProviderAccess.createItem(item, currentShoppingList.getId(), callback);
@@ -250,15 +258,17 @@ public class ListDetailsActivityFragment extends Fragment implements
             }
 
             @Override
-            public void onFailure(int errorCode) {
-                Snackbar.make(getView(), R.string.fragment_list_details_error_update_item, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.snackbar_action_retry, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                onItemEdited(item);
-                            }
-                        }).show();
-                queryRunning = false;
+            public void onFailure() {
+                if (getView() != null) {
+                    Snackbar.make(getView(), R.string.fragment_list_details_error_update_item, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.snackbar_action_retry, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    onItemEdited(item);
+                                }
+                            }).show();
+                    queryRunning = false;
+                }
             }
         };
         contentProviderAccess.updateItem(item, callback);
@@ -277,15 +287,17 @@ public class ListDetailsActivityFragment extends Fragment implements
             }
 
             @Override
-            public void onFailure(int errorCode) {
-                Snackbar.make(getView(), R.string.fragment_list_details_error_delete_item, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.snackbar_action_retry, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                onItemEdited(item);
-                            }
-                        }).show();
-                queryRunning = false;
+            public void onFailure() {
+                if (getView() != null) {
+                    Snackbar.make(getView(), R.string.fragment_list_details_error_delete_item, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.snackbar_action_retry, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    onItemEdited(item);
+                                }
+                            }).show();
+                    queryRunning = false;
+                }
             }
         };
         contentProviderAccess.deleteItem(item, callback);
@@ -304,14 +316,16 @@ public class ListDetailsActivityFragment extends Fragment implements
             }
 
             @Override
-            public void onFailure(int errorCode) {
-                Snackbar.make(getView(), R.string.fragment_list_details_error_update_shopping_list, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.snackbar_action_retry, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                onShoppingListTitleEdited(title);
-                            }
-                        }).show();
+            public void onFailure() {
+                if (getView() != null) {
+                    Snackbar.make(getView(), R.string.fragment_list_details_error_update_shopping_list, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.snackbar_action_retry, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    onShoppingListTitleEdited(title);
+                                }
+                            }).show();
+                }
                 queryRunning = false;
             }
         };
@@ -324,6 +338,7 @@ public class ListDetailsActivityFragment extends Fragment implements
      * @param animate  if true hiding will be animated, otherwise views will hide instantly
      * @param callback called when all views are done hiding (optional)
      */
+    @SuppressWarnings("SameParameterValue")
     private void hideAllViews(boolean animate, @Nullable final AnimationFinishedCallback callback) {
         Logger.v(LOG_TAG, "hideAllViews(" + animate + ")");
 
@@ -331,7 +346,7 @@ public class ListDetailsActivityFragment extends Fragment implements
             @Override
             public void animationFinished() {
                 listHidden = true;
-                if (listHidden && loadingHidden) {
+                if (loadingHidden) {
                     if (callback != null) callback.animationFinished();
                 }
             }
@@ -340,7 +355,7 @@ public class ListDetailsActivityFragment extends Fragment implements
             @Override
             public void animationFinished() {
                 loadingHidden = true;
-                if (listHidden && loadingHidden) {
+                if (listHidden) {
                     if (callback != null) callback.animationFinished();
                 }
             }
@@ -353,6 +368,7 @@ public class ListDetailsActivityFragment extends Fragment implements
      * @param animate  if true showing view will be animated, otherwise change will be instant
      * @param callback called when view is done showing (optional)
      */
+    @SuppressWarnings("SameParameterValue")
     private void showViewList(boolean animate, @Nullable final AnimationFinishedCallback callback) {
         Logger.v(LOG_TAG, "showViewList(" + animate + ", " + callback + ")");
         if (listRV.getVisibility() == View.VISIBLE) {
@@ -444,6 +460,7 @@ public class ListDetailsActivityFragment extends Fragment implements
      * @param animate  if true showing view will be animated, otherwise change will be instant
      * @param callback called when view is done showing (optional)
      */
+    @SuppressWarnings("SameParameterValue")
     public void showViewLoading(boolean animate, @Nullable final AnimationFinishedCallback callback) {
         Logger.v(LOG_TAG, "showViewLoading(" + animate + ", " + callback + ")");
         if (loadingMPB.getVisibility() == View.VISIBLE) {
@@ -545,9 +562,11 @@ public class ListDetailsActivityFragment extends Fragment implements
     private void restoreInstanceState(Bundle savedInstanceState) {
         Logger.v(LOG_TAG, "restoreInstanceState()");
         currentShoppingList = savedInstanceState.getParcelable(STATE_CURRENT_SHOPPING_LIST);
-        setUpAndShowList(currentShoppingList.isArchived(),
-                currentShoppingList.getTitle(),
-                currentShoppingList.getItems(), false);
+        if (currentShoppingList != null) {
+            setUpAndShowList(currentShoppingList.isArchived(),
+                    currentShoppingList.getTitle(),
+                    currentShoppingList.getItems(), false);
+        }
     }
 
     /**
@@ -555,7 +574,7 @@ public class ListDetailsActivityFragment extends Fragment implements
      * @param outState bundle to which state will be saved
      */
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         Logger.v(LOG_TAG, "onSaveInstanceState()");
         outState.putParcelable(STATE_CURRENT_SHOPPING_LIST, currentShoppingList);
         super.onSaveInstanceState(outState);
